@@ -5,47 +5,76 @@ import judge
 class Processor:
     """
     Class Processor is used to create a Processor instance to process image files.
+    attributes:
+        content: the directory/file(s) to be operated.
+        operation: the operation to be applied on the content. The value is the sum of
+                   the single operations.
+            0: default
+            4: resize
+            2: rotate
+            1: convert file type
+        log_file_path: the path of the log file.
     """
-    def __init__(self, content, log_path):
-        self.content = content
-        self.log_file_path = log_path
+    def __init__(self, parameters, output_path, log_path):
+        self.parameters = parameters
+        content = self.parameters["content"]
         self.judge = judge.Judge(content)
+        self.output_path = output_path
+        self.log_file_path = log_path
 
     def __set_log_file__(self, log_path):
         self.log_file_path = log_path
 
-    def write_log(self, content):
+    def set_output_file(self, original_path):
+        pass
+        #TODO
+        # if dir, make new dir in the current env
+        # if multi files, make new dir in the current env
+        # if single file, make new file in the current env
+
+    def write_log(self, log_content):
         try:
             with open(self.log_file_path, 'a', encoding='utf-8') as log_file:
                 time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                if content.strip() != "":
-                    log_file.write("{} {}\n".format(time, content))
+                if log_content.strip() != "":
+                    log_file.write("{} {}\n".format(time, log_content))
         except:
             print("Fatal! Can't log errors")
 
+    def __test_parameters__(self):
+        list_para = dict()
+        list_para["parameters"] = self.parameters
+        list_para["output_path"] = self.output_path
+        list_para["log_path"] = self.log_file_path
+        print(list_para)
+
+    def convert_rgb(self):
+        pass
+
+    def resize(self):
+        pass
+
+    def rotate(self):
+        pass
+
+    def convert_type(self):
+        pass
+
     def process(self):
-        judge_result, judge_error = self.judge.judge_content()
-        if judge_result >= 900:
-            # means we have an error when judging, and we need to log the error
-            self.write_log(judge_error + "\n")
-        else:
-            self.write_log("Process finished successfully!\n")
+
+            #set output
+            #convert("RGB")
+            #TODO: process files
+            success_info = "Process finished successfully"
+            print(success_info)
+            self.write_log("{}\n".format(success_info))
 
 
 if __name__ == '__main__':
-    file1 = "/Users/zhangmengfeifei/Desktop/self_learning/test_files/log.txt"
-    file2 = "/Users/zhangmengfeifei/Desktop/self_learning"
-    file3 = "/Users/zhangmengfeifei/Desktop1/"
-    file4 = "/Users/zhangmengfeifei/Desktop/Good afternoon everyone.docx"
-    file5 = "/Users/zhangmengfeifei/Desktop/Good afternoon everyone.docx/"
-    list = []
-    list.append(file1)
-    list.append(file2)
-    list.append(file3)
-    list.append(file4)
-    list.append(file5)
+
     path = "/Users/zhangmengfeifei/Desktop/self_learning/test_files/log.txt"
-    processor = Processor(list, path)
-    processor.process()
+    for l in list:
+        processor = Processor(l, path)
+        processor.process()
 
 
