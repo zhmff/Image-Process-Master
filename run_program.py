@@ -1,8 +1,8 @@
-import Processor
-from judge import Judge
 import os
 import datetime
 import time
+import Processor
+from judge import Judge
 
 
 def check_user_exit(user_input):
@@ -124,15 +124,15 @@ def set_rotate_para():
 def set_convert_para():
     valid_type = False
     img_type = None
-    support_list = ("JPG", "JPEG", "PNG", "TIFF", "GIF", "BMP", "PDF", "RAW")
+    support_list = ("jpg", "jpeg", "png", "tiff", "gif", "bmp", "pdf", "raw")
     while not valid_type:
         type_input = input("\nPlease type in the type of the image file after "
                            "processing (case insensitive).\nSupported image "
-                           "types:\n\t.JPG\t.JPEG\t.PNG\t.TIFF"
-                           "\n\t.GIF\t.BMP\t.PDF\t.RAW\n"
+                           "types:\n\t.jpg\t.jpeg\t.png\t.tiff"
+                           "\n\t.gif\t.bmp\t.pdf\t.raw\n"
                            "You can also type in 'exit()' to exit.")
         check_user_exit(type_input)
-        img_type = type_input.strip(".").upper()
+        img_type = type_input.strip(".").lower()
         if img_type not in support_list:
             print("Wrong value received! Please check if the type is supported.")
         else:
@@ -155,12 +155,14 @@ def set_output_path():
         output_original = input_output_path
         check_user_exit(output_original)
         if not os.path.isdir(output_original):
-            print('Receivedd: {}' + output_original)
+            print('Received: {}' + output_original)
             print("Wrong path received! Please make sure the directory exists.")
         else:
             valid_output = True
+            if not output_original.endswith(os.sep):
+                output_original += os.sep
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-            output_path = output_original + os.sep + "processed_images_" + \
+            output_path = output_original + "processed_images_" + \
                 timestamp + os.sep
             try:
                 os.mkdir(output_path)
@@ -172,31 +174,15 @@ def set_output_path():
 def run_program():
     log_path = "/Users/zhangmengfeifei/Desktop/self_learning/test_files/log.txt"
     parameters = dict()
+    print("Welcome to Image Process Master!")
     parameters["content_type"], parameters["content"] = set_content()
     operation = set_operation()
     set_operation_para(parameters, operation)
     output_path = set_output_path()
     processor = Processor.Processor(parameters, output_path, log_path)
-    processor.__test_parameters__()
-    # processor.process()
-
+    # processor.__test_parameters__()
+    processor.process()
 
 
 if __name__ == '__main__':
-    # print(set_output_path())
-    # print(os.path.isdir('/Users/zhangmengfeifei/Desktop'))
-    # print(os.listdir(("/Users/zhangmengfeifei/Desktop")))
-    run_program()
-    # print(set_resize_para())
-    # print(set_content())
-    ls = []
-    file1 = "/Users/zhangmengfeifei/Desktop/self_learning/test_files/log.txt"
-    ls.append(file1)
-    file2 = "/Users/zhangmengfeifei/Desktop/self_learning"
-    ls.append(file2)
-    # file3 = "/Users/zhangmengfeifei/Desktop1/"
-    # ls.append(file3)
-    file4 = "/Users/zhangmengfeifei/Desktop/Good afternoon everyone.docx"
-    ls.append(file4)
-    # file5 = "/Users/zhangmengfeifei/Desktop/Good afternoon everyone.docx/"
-    # ls.append(file5)
+    pass

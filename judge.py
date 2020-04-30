@@ -1,6 +1,5 @@
 import os
 import PIL
-from PIL import Image
 
 
 class Judge:
@@ -26,16 +25,19 @@ class Judge:
         else:
             if os.path.isfile(self.content_to_judge):
                 try:
-                    Image.open(self.content_to_judge)
+                    PIL.Image.open(self.content_to_judge)
                 except PIL.UnidentifiedImageError:
                     content_type = 0
                     content = "ERROR! {} is not an Image file.".format(self.content_to_judge)
-                    return  content_type, content
+                    return content_type, content
                 content_type = 1
                 content = self.content_to_judge
             elif os.path.isdir(self.content_to_judge):
                 content_type = 2
-                content = self.content_to_judge
+                if not self.content_to_judge.endswith(os.sep):
+                    content = self.content_to_judge + os.sep
+                else:
+                    content = self.content_to_judge
             else:
                 content_type = 0
                 content = "ERROR! Unknown type of file: {} ".format(self.content_to_judge)
@@ -82,23 +84,4 @@ class Judge:
 
 
 if __name__ == '__main__':
-    path = "/Users/zhangmengfeifei/Desktop/self_learning/test_files/"
-
-    ls = []
-    file1 = "/Users/zhangmengfeifei/Desktop/self_learning/test_files/log.txt"
-    ls.append(file1)
-    file2 = "/Users/zhangmengfeifei/Desktop/self_learning"
-    ls.append(file2)
-    # file3 = "/Users/zhangmengfeifei/Desktop1/"
-    # ls.append(file3)
-    file4 = "/Users/zhangmengfeifei/Desktop/Good afternoon everyone.docx"
-    ls.append(file4)
-    # file5 = "/Users/zhangmengfeifei/Desktop/Good afternoon everyone.docx/"
-    # ls.append(file5)
-
-    # for l in ls:
-    #     judger = Judge(l)
-    #     # print(judger.judge_content())
-    # judger = Judge(ls)
-    # print(judger.judge_content())
-    im = Image.open(file1)
+    pass
